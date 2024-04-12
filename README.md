@@ -14,3 +14,5 @@ paramters:
 example:
 ChatGptMdExport /i:"c:\temp\gpt_export" /o:"c:\temp\md_folder"
 ```
+
+PUBLISH AOT is active!
