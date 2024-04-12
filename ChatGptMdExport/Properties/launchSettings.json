@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ChatGptMdExport": {
+      "commandName": "Project",
+      "commandLineArgs": "/i:\"c:\\temp\\gpt_export\" /o:\"c:\\temp\\md_folder\" /cd"
+    }
+  }
+}
