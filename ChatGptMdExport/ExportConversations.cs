@@ -19,54 +19,73 @@ namespace ChatGptMdExport
         }
         protected override void Execute()
         {
-            byte[] json = File.ReadAllBytes(this.SourceFile!);
-            string jsStr = Encoding.UTF8.GetString(json);
-            var conversations = JsonSerializer.Deserialize<Conversation[]>(jsStr, GptJasonSerializerContext.Default.ConversationArray);
-
-            if (conversations == null) 
+            using (FileStream stream = File.OpenRead(this.SourceFile!))
             {
-                throw new Exception($"{nameof(ExportConversations)} Error:Conversations not loaded!");
-            }
-
-            foreach (var conversation in conversations) 
-            {
-                string title = DateTime.Now.ToString();
-                if (!string.IsNullOrEmpty(conversation.Title)) 
-                { 
-                    title = conversation.Title;
-                }
-                string fileName = FilterInvalidCharacters(title);
-                fileName += ".md";
-                fileName = Path.Combine(this.DestinationFolder!, fileName);
-                StringBuilder sb = new StringBuilder();
-                sb.AppendLine($"# {conversation.Title}");
-                if (conversation.Mapping != null) 
+                var conversations = JsonSerializer.Deserialize<Conversation[]>(stream, GptJasonSerializerContext.Default.ConversationArray);
+                if (conversations is null)
                 {
-                    foreach (var mapping in conversation.Mapping.Values) 
-                    { 
-                        if(mapping?.Message != null)
-                        {
-                            if(mapping.Message.Author != null)
-                            {
-                                sb.AppendLine($"## {mapping.Message.Author.Role}");
-                            }
-                            if (mapping.Message.Content != null) 
-                            { 
-                                if(mapping.Message.Content.Parts != null)
-                                {
-                                    foreach(var item in mapping.Message.Content.Parts)
-                                    {
-                                        sb.AppendLine(item);
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    throw new InvalidOperationException($"{nameof(ExportConversations)} Error: Conversations not loaded!");
                 }
-                sb.AppendLine("");
-                File.WriteAllText(fileName, sb.ToString());
-                Log($"Write=>{fileName}");
+
+                foreach (var conversation in conversations)
+                {
+                    string title = conversation.Title ?? DateTime.Now.ToString("yyyyMMddHHmmss");
+                    string fileName = Path.Combine(this.DestinationFolder!, $"{FilterInvalidCharacters(title)}.md");
+
+                    var content = BuildContent(conversation);
+                    File.WriteAllText(fileName, content);
+                    Log($"Write=>{fileName}");
+                }
             }
         }
+        private string BuildContent(Conversation conversation)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"# {conversation.Title}");
+            string lastRole = string.Empty;
+            if (conversation.Mapping != null)
+            {
+                foreach (var mapping in conversation.Mapping.Values)
+                {
+                    if (mapping?.Message != null)
+                    {
+                        string currentRole = mapping.Message.Author?.Role!;
+                        if (lastRole == "assistant" && currentRole == "assistant")
+                        {
+                            for (int i = sb.Length - 1; i >= 0; i--)
+                            {
+                                if (sb[i] == '\r' || sb[i] == '\n')
+                                {
+                                    sb.Length = i;
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+
+                            sb.AppendLine(FormatMessageContent(mapping.Message.Content));
+                        }
+                        else 
+                        {
+                            sb.AppendLine($"## {mapping.Message.Author?.Role}");
+                            sb.AppendLine(FormatMessageContent(mapping.Message.Content));
+                            
+                        }
+                        
+                        lastRole = mapping.Message.Author?.Role!;
+                    }
+                }
+            }
+            return sb.ToString();
+        }
+
+        private string FormatMessageContent(Content? content)
+        {
+            if (content?.Parts == null) return string.Empty;
+
+            return string.Join(Environment.NewLine, content.Parts.Select(p => p));
+        }
+      
     }
 }
