@@ -16,3 +16,6 @@ ChatGptMdExport /i:"c:\temp\gpt_export" /o:"c:\temp\md_folder"
 ```
 
 PUBLISH AOT is active!
+
+### Convert ot HTML
+You can use https://github.com/magiclen/markdown2html-converter to convert the Markdown files to HTML
