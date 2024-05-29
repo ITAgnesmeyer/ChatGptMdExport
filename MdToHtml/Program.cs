@@ -290,6 +290,27 @@ namespace MdToHtml
             File.WriteAllText(menuFile, menuContent);
             Console.WriteLine($"Write=>{menuFile}");
 
+            string indexFile = Path.Combine(destFolder, "index.html");
+            string indexContent = $@"<!DOCTYPE html>
+<html style=""height: 100%;width: 100%;"">
+  <head>
+    <title>Parcel Sandbox</title>
+    <meta charset=""UTF-8"" />
+    <link rel=""stylesheet"" href=""./css/FrameStyles.css""/>
+  </head>
+  <body style=""height: 100%;width: 100%;"">
+    <div class=""container"">
+      <div class=""left""><iframe name=""myFrame0"" title=""menu"" src=""./menu.html"" width=""100%"" height=""100%"" ></iframe></div>
+      <div class=""resizer"" id=""dragMe""></div>
+      <div class=""right""><iframe name=""myframe1"" title=""content"" src=""about:blank"" width=""100%"" height=""100%"" ></iframe></div>
+    </div>
+    <script src=""./css/FrameIndex.js""></script>
+  </body>
+</html>";
+                        File.WriteAllText(indexFile, indexContent);
+            Console.WriteLine($"Write=>{indexFile}");
+
+            
         }
 
         static string GetTooPath()
