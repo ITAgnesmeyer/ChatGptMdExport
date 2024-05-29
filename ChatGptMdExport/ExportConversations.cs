@@ -14,8 +14,16 @@ namespace ChatGptMdExport
         protected override string TargetFile => "conversations.json";
         static string FilterInvalidCharacters(string input)
         {
-            // Regulärer Ausdruck, der alle Zeichen außer den erlaubten entfernt
-            return Regex.Replace(input, @"[^\w\s\-_\.~!#$%&'(){}[\]+\,\;=@]+", "");
+            // erstelle eine Regex die alle in Dateinamen ungültigen Zeichen erkennt und entferne sie
+            // vorgausgesetzt wird , dass die Datei auf einem Windows-System gespeichert wird
+            // es sollen auch zeichen win \t \n \r entfernt werden
+
+            string resultText = Regex.Replace(input, @"[^\w\s\-_\.~!#$%&'(){}[\]+\,\;=@]+", "");
+            resultText = resultText.Replace("\t", "");
+            resultText = resultText.Replace("\n", "");
+            resultText = resultText.Replace("\r", "");
+            return resultText;
+
         }
         protected override void Execute()
         {

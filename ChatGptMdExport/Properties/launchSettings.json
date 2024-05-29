@@ -2,7 +2,7 @@
   "profiles": {
     "ChatGptMdExport": {
       "commandName": "Project",
-      "commandLineArgs": "/i:\"c:\\temp\\gpt_export\" /o:\"c:\\temp\\md_folder\" /cd"
+      "commandLineArgs": "/i:\"F:\\ChatGPT\\test_gpt\" /o:\"F:\\ChatGPT\\test_out\" /cd"
     }
   }
 }
