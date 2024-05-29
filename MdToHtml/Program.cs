@@ -1,8 +1,19 @@
 ﻿using ChatGptMdExport;
 using Markdig;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace MdToHtml
 {
+    internal class LinkItem
+    {
+        public string? Group { get; set; }
+
+        public string? Name { get; set; }
+        public string? Link { get; set; }
+
+        public string? TagString { get; set; }
+    }
     internal class Options : OpitonsBase
     {
 
@@ -34,6 +45,21 @@ namespace MdToHtml
 
     internal class Program
     {
+        // erstelle eine funktion die alle ungültigen zeichen in dem Namen der HTML Datei ersetzt
+        // die html datei soll in einem href aufrufbar sein
+        // alle leerzeichen sollen durch einen unterticht ersetzt werden
+        // die gefunden Zeichen sollen durch ein unterstrich ersetzt werden
+        public static string ReplaceInvalidChars(string name)
+        {
+            string[] invalidChars = new string[] { " ", "ä", "ö", "ü", "ß", "Ä", "Ö", "Ü", "#" };
+            string[] replaceChars = new string[] { "_", "ae", "oe", "ue", "ss", "Ae", "Oe", "Ue","Sharp" };
+            for (int i = 0; i < invalidChars.Length; i++)
+            {
+                name = name.Replace(invalidChars[i], replaceChars[i]);
+            }
+            return name;
+        }
+
         static void Main(string[] args)
         {
 
@@ -108,6 +134,7 @@ namespace MdToHtml
                     Console.WriteLine($"Copy=>{destFile}");
                 }
             }
+            List<LinkItem> links = new List<LinkItem>();
 
 
             // kopiere alle Dateien mit der Endung .md in das Zielverzeichnis
@@ -116,8 +143,24 @@ namespace MdToHtml
             string[] files = Directory.GetFiles(sourceFolder, "*.md");
             foreach (var file in files)
             {
-                string fileName = Path.GetFileName(file);
-                string destFile = Path.Combine(destFolder, fileName.Replace(".md", ".html"));
+                FileInfo fi = new FileInfo(file);
+                var ext = fi.Extension;
+
+                string fileName = fi.Name;
+
+                
+                string destFileNameRaw = fileName.Replace(ext, "");
+                string linkName = ReplaceInvalidChars(destFileNameRaw) + ".html";
+                string destFile = Path.Combine(destFolder, linkName);
+
+                LinkItem link = new LinkItem
+                {
+                    Group = "Page",
+                    Name = destFileNameRaw,
+                    Link = linkName
+
+                };
+                links.Add(link);
                 string content = File.ReadAllText(file);
                 string htmlContent = Markdown.ToHtml(content, pipeline);
                 string fullHtmlContent = $@"
@@ -175,8 +218,78 @@ namespace MdToHtml
                 Console.WriteLine($"Write=>{destFile}");
             }
 
+            string hRefs = string.Empty;
+            foreach (var item in links)
+            {
+                // in item.Group wird das erste Wort von item.Name eingfügt
+                // wenn item.Name kein Leerzeichen enthält wird item.Group auf item.Name gesetzt
+                if(item.Name != null)
+                {
+                    if(item.Name.Contains(" "))
+                    {
 
-        
+                       item.Group = item.Name.Split(" ")[0];
+                    }
+                    else
+                    {
+                        item.Group = item.Name;
+                    }
+                }
+                
+                item.TagString = $"<li><a href=\"./{item.Link}\" target=\"myframe1\">{item.Name}</a></li>";
+            }
+
+            // ordne die Links nach Gruppen
+            var groups = links.GroupBy(x => x.Group);
+            foreach (var group in groups)
+            {
+                // erstelle pro Gruppe ein details element
+                // in dem details element wird ein summary element erstellt
+                // in dem summary element wird der Gruppenname eingefügt
+                // in dem details element wird ein ul element erstellt
+                // in dem ul element werden die Links der Gruppe eingefügt
+                
+                string groupContent = string.Empty;
+                foreach (var item in group)
+                {
+                    groupContent += item.TagString;
+                }
+                hRefs += $@"<li><details>
+            <summary>{group.Key}</summary>
+            <ul>
+                {groupContent}
+            </ul>
+        </details></li>";
+
+
+                
+            }
+
+            string menuContent = $@"<!DOCTYPE html>
+<html>
+<head>
+    <link rel=""stylesheet"" href=""./css/TreeStyles.css"">
+</head>
+<body>
+<ul class=""tree"">
+
+    <li>
+        <details open>
+            <summary>Pages</summary>
+            <ul>
+                {hRefs}
+            </ul>
+        </details>
+    </li>
+    
+</ul>
+</body>
+</html>";
+
+          string menuFile = Path.Combine(destFolder, "menu.html");
+            File.WriteAllText(menuFile, menuContent);
+            Console.WriteLine($"Write=>{menuFile}");
+
         }
 
         static string GetTooPath()

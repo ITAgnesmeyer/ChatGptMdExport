@@ -1,0 +1,33 @@
+.container {
+    display: flex;
+  
+    /* Eine Linie zur Trennung von Bereichen setzen */
+    border: 1px solid #cbd5e0;
+    height: 100%;
+    width: 100%;
+  }
+  .left {
+    /* Anfangsgröße auf die Hälfte setzen */
+    width: 20%;
+  
+    /* zentriert ausrichten */
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  }
+  .resizer {
+    background-color: #cbd5e0;
+    cursor: ew-resize;
+    height: 100%;
+    width: 2px;
+  }
+  .right {
+    /* Ändert sich dynamisch abhängig vom verbleibenden Platz, der von der linken Seite belegt wird */
+    flex: 1;
+  
+    /* zentriert ausrichten */
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  }
+  

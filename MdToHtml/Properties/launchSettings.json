@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MdToHtml": {
+      "commandName": "Project",
+      "commandLineArgs": "/i:\"F:\\ChatGPT\\test_out\" /o:\"F:\\ChatGPT\\test_html\" /c"
+    }
+  }
+}
