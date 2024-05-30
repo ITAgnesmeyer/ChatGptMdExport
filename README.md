@@ -56,5 +56,5 @@ MdToHtml is a conversion tool specifically designed to convert Markdown files in
 
 MdToHtml is a useful tool for anyone who regularly works with Markdown and needs a simple way to convert these files into HTML.
 
-![ChatGPT-MdToHtmlExport](docs/ChatGPT-MdToHtmlExport.png)
+![ChatGPT-MdToHtmlExport](doc/ChatGPT-MdToHtmlExport.png)
 
