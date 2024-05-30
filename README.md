@@ -17,9 +17,9 @@ ChatGptMdExport /i:"c:\temp\gpt_export" /o:"c:\temp\md_folder"
 
 # ChatGptMdExport Functionality
 
-ChatGptMdExport is a specially designed tool that exports interactions with OpenAI's GPT-3 chatbot into a Markdown file. Here is a more detailed description of its functionality:
+ChatGptMdExport is a specially designed tool that exports interactions with OpenAI's GPT-3(GPT-4,GPT-4o) chatbot into a Markdown file. Here is a more detailed description of its functionality:
 
-1. **Input**: The tool takes the interactions between the user and the GPT-3 chatbot as input. This includes both the user's questions or commands and the bot's responses.
+1. **Input**: The tool takes the interactions between the user and the GPT-3(GPT-4,GPT-4o) chatbot as input. This includes both the user's questions or commands and the bot's responses.
 
 2. **Processing**: ChatGptMdExport reads and understands the interactions. It recognizes the differences between user inputs and bot responses and formats them accordingly.
 
@@ -27,7 +27,7 @@ ChatGptMdExport is a specially designed tool that exports interactions with Open
 
 4. **Output**: After all interactions have been exported into the Markdown file, the tool saves the file. The user can then open this file and view the entire chat session in a clear and readable format.
 
-ChatGptMdExport is a useful tool for anyone who regularly works with the GPT-3 chatbot and needs a simple way to document and analyze these interactions.
+ChatGptMdExport is a useful tool for anyone who regularly works with the GPT-3(GPT-4,GPT-4o) chatbot and needs a simple way to document and analyze these interactions.
 
 
 
@@ -55,4 +55,6 @@ MdToHtml is a conversion tool specifically designed to convert Markdown files in
 5. **Display**: The user can open the generated HTML file and view it in a web browser. The HTML file retains the formatting and structure of the original Markdown file, so the content is displayed exactly as it was written in Markdown.
 
 MdToHtml is a useful tool for anyone who regularly works with Markdown and needs a simple way to convert these files into HTML.
+
+![ChatGPT-MdToHtmlExport](docs/ChatGPT-MdToHtmlExport.png)
 
