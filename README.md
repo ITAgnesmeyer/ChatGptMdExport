@@ -15,7 +15,21 @@ example:
 ChatGptMdExport /i:"c:\temp\gpt_export" /o:"c:\temp\md_folder"
 ```
 
-PUBLISH AOT is active!
+# ChatGptMdExport Functionality
+
+ChatGptMdExport is a specially designed tool that exports interactions with OpenAI's GPT-3 chatbot into a Markdown file. Here is a more detailed description of its functionality:
+
+1. **Input**: The tool takes the interactions between the user and the GPT-3 chatbot as input. This includes both the user's questions or commands and the bot's responses.
+
+2. **Processing**: ChatGptMdExport reads and understands the interactions. It recognizes the differences between user inputs and bot responses and formats them accordingly.
+
+3. **Export**: After the tool has analyzed the interactions, it begins exporting these interactions into a Markdown file. Each interaction is represented as a separate line in the Markdown file, with user inputs and bot responses clearly marked.
+
+4. **Output**: After all interactions have been exported into the Markdown file, the tool saves the file. The user can then open this file and view the entire chat session in a clear and readable format.
+
+ChatGptMdExport is a useful tool for anyone who regularly works with the GPT-3 chatbot and needs a simple way to document and analyze these interactions.
+
+
 
 ### Convert ot HTML
 ```cmd
