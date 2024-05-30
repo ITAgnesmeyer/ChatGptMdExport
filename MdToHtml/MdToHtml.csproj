@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <None Update="tools\CSS\expand-collapse.svg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
     <None Update="tools\CSS\FrameIndex.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -39,6 +39,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="tools\CSS\mermaid.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="tools\CSS\minus.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="tools\CSS\plus.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="tools\CSS\prism-dark.css">

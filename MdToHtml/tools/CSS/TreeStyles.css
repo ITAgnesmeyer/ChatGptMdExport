@@ -1,75 +1,180 @@
-.tree{
-  --spacing : 1.5rem;
-  --radius  : 10px;
-}
+/* 
+    in diesem CSS wird das aussehen des Treeview deffiniert.
+    Es wird ein Baum dargestellt, der sich durch Klicken auf die überschriften öffnen und schließen lässt.
+    Die Baumstruktur wird durch die Verwendung von <ul> und <li> Elementen dargestellt.
+    Die Baumstruktur wird durch die Verwendung von <details> und <summary> Elementen dargestellt.
+    vor den <summary> Element wird ein Kreis angezeigt, der durch das Klicken auf den Kreis den Baum öffnet und schließt.
+    In dem Kreis wird ein Bild angezeigt, das den Baum öffnen und schließen symbolisiert.
+    Die Baumstruktur wird durch die Verwendung von <details> und <summary> Elementen dargestellt.
+*/
 
-.tree li{
-  display      : block;
-  position     : relative;
-  padding-left : calc(2 * var(--spacing) - var(--radius) - 2px);
+.tree {
+    --radius: 8px;
+    --spacing: 1.5rem;
+    --image-size: calc(2 * var(--radius));
+    --image-plus: url('plus.svg'); /* URL des Plus-SVG */
+    --image-minus: url('minus.svg'); /* URL des Minus-SVG */
+    --image-psition-first: 0 0;
+    --image-psition-second: 0 -20px;
 }
+    /*
+    Hier wird <li> Elemente als Block dargestellt.
+    Die Position wird auf relative gesetzt.
+    Der linke Abstand wird berechnet, indem der doppelte Abstand abgezogen wird, der Radius abgezogen wird und 2px abgezogen wird.
+*/
+    .tree li {
+        display: block;
+        position: relative;
+        padding-left: calc(2 * var(--spacing) - var(--radius) - 2px);
+    }
 
-.tree ul{
-  margin-left  : calc(var(--radius) - var(--spacing));
-  padding-left : 0;
-}
+    /*
+    Hier wird <ul> Elemente als Block dargestellt.
+    Der linke Abstand wird berechnet, indem der Radius abgezogen wird und der Abstand abgezogen wird.
+    Der obere Abstand wird auf 0 gesetzt.
+    Der linke Abstand wird auf 0 gesetzt.
+    Der untere Abstand wird auf 0 gesetzt.
+    Der rechte Abstand wird auf 0 gesetzt.
 
-.tree ul li{
-  border-left : 2px solid #ddd;
-}
+*/
+    .tree ul {
+        margin-left: calc(var(--radius) - var(--spacing));
+        padding-left: 0;
+    }
 
-.tree ul li:last-child{
-  border-color : transparent;
-}
+        /*
+    hier wird für das <ul> und <li> Elemente die Farbe des Randes auf #ddd gesetzt.
+*/
+        .tree ul li {
+            border-left: 2px solid #ddd;
+        }
 
-.tree ul li::before{
-  content      : '';
-  display      : block;
-  position     : absolute;
-  top          : calc(var(--spacing) / -2);
-  left         : -2px;
-  width        : calc(var(--spacing) + 2px);
-  height       : calc(var(--spacing) + 1px);
-  border       : solid #ddd;
-  border-width : 0 0 2px 2px;
-}
+            /*
+    Hier wird für das <ul> und <li> Elemente die Farbe des Randes auf transparent gesetzt.
 
-.tree summary{
-  display : block;
-  cursor  : pointer;
-}
+*/
 
-.tree summary::marker,
-.tree summary::-webkit-details-marker{
-  display : none;
-}
+            .tree ul li:last-child {
+                border-color: transparent;
+            }
 
-.tree summary:focus{
-  outline : none;
-}
+            /*
+    hier wird für das <ul> und <li> before Pseudo-Element die Farbe des Randes auf #ddd gesetzt.
+    Der linke Abstand wird auf -2px gesetzt.
+    Die Breite wird berechnet, indem der Abstand abgezogen wird und 2px hinzugefügt wird.
+    Die Höhe wird berechnet, indem der Abstand abgezogen wird und 1px hinzugefügt wird.
+    Der Rand wird auf solid gesetzt.
+    Der Rand wird auf #ddd gesetzt.
+    Der Rand wird auf 0 0 2px 2px gesetzt.
+    wobei 0 0 2px 2px die Breite des Randes ist.
+    also briete links 0px, oben 0px, rechts 2px, unten 2px.
 
-.tree summary:focus-visible{
-  outline : 1px dotted #000;
-}
 
-.tree li::after,
-.tree summary::before{
-  content       : '';
-  display       : block;
-  position      : absolute;
-  top           : calc(var(--spacing) / 2 - var(--radius));
-  left          : calc(var(--spacing) - var(--radius) - 1px);
-  width         : calc(2 * var(--radius));
-  height        : calc(2 * var(--radius));
-  border-radius : 50%;
-  background    : #ddd;
-}
+    before ist ein Pseudo-Element, das das erste Kind eines Elements vor dem ersten tatsächlichen Kind darstellt.
+    before wird verwendet, um Inhalte vor dem Inhalt des Elements zu platzieren.
 
-.tree summary::before{
-  z-index    : 1;
-  background : #696 url('expand-collapse.svg') 0 0;
-}
+*/
+            .tree ul li::before {
+                content: '';
+                display: block;
+                position: absolute;
+                top: calc(var(--spacing) / -2);
+                left: -2px;
+                width: calc(var(--spacing) + 2px);
+                height: calc(var(--spacing) + 1px);
+                border: solid #ddd;
+                border-width: 0 0 2px 2px;
+            }
+    /*
+    hier wird für das <summary> Element 
+    die Anzeige auf block gesetzt.
+    Der Cursor wird auf pointer gesetzt.
+*/
+    .tree summary {
+        display: block;
+        cursor: pointer;
+    }
 
-.tree details[open] > summary::before{
-  background-position : calc(-2 * var(--radius)) 0;
-}
+        /*
+    hier wird für das <summary> Element marker und -webkit-details-marker Pseudo-Element 
+    die Anzeige auf none gesetzt.
+    ein marker ist ein Punkt oder ein anderes Zeichen, das vor dem Inhalt eines Elements angezeigt wird.
+    -webkit-details-marker ist ein Punkt oder ein anderes Zeichen, das vor dem Inhalt eines Elements angezeigt wird.
+*/
+        .tree summary::marker,
+        .tree summary::-webkit-details-marker {
+            display: none;
+        }
+
+        /*
+    hier wird für das <summary> Element das focus Pseudo-Element
+    der Rand auf none gesetzt.
+*/
+        .tree summary:focus {
+            outline: none;
+        }
+
+        /*
+    hier wird für das <summary> Element das focus-visible Pseudo-Element
+    der Rand auf 1px dotted #000 gesetzt.
+
+*/
+        .tree summary:focus-visible {
+            outline: 1px dotted #000;
+        }
+
+        /*
+    hier wird für das <summary> Element das before Pseudo-Element
+    und das after Pseudo-Element definiert.
+    die Anzeige auf block gesetzt.
+    Die Position wird auf absolute gesetzt.
+    Der obere Abstand wird berechnet, indem der Abstand abgezogen wird und der Radius abgezogen wird.
+    Der linke Abstand wird berechnet, indem der Abstand abgezogen wird und der Radius abgezogen wird.
+    Die Breite wird berechnet, indem der Radius verdoppelt wird.
+    Die Höhe wird berechnet, indem der Radius verdoppelt wird.
+    Der Randradius wird auf 50% gesetzt.
+    Der Hintergrund wird auf #add4f3 gesetzt.
+
+*/
+        .tree li::after,
+        .tree summary::before {
+            content: '';
+            display: block;
+            position: absolute;
+            top: calc(var(--spacing) / 2 - var(--radius));
+            left: calc(var(--spacing) - var(--radius) - 1px);
+            width: calc(2 * var(--radius));
+            height: calc(2 * var(--radius));
+            border-radius: 50%;
+            background: #add4f3;
+        }
+
+/*
+    Hier wird für das <summary> Element das before Pseudo-Element
+    der Z-Index auf 1 gesetzt.
+    Der Hintergrund wird auf rgb(71, 111, 187) gesetzt.
+    Der Hintergrund wird auf var(--image-plus) gesetzt.
+    Der Hintergrundgröße wird auf cover gesetzt.
+    Der Hintergrundposition wird auf center gesetzt.
+    Der Hintergrundwiederholung wird auf no-repeat gesetzt.
+    Der Z-Index ist eine CSS-Eigenschaft, die die Stapelreihenfolge von Elementen steuert.
+    Der Z-Index definiert die Reihenfolge, in der Elemente auf dem Bildschirm angezeigt werden.
+
+*/
+        .tree summary::before {
+            z-index: 1;
+            background-color: rgb(71, 111, 187);
+            background-image: var(--image-plus);
+            background-size: cover; /* Füllt den Kreis komplett aus */
+            background-position: center; /* Zentriert das Bild */
+            background-repeat: no-repeat;
+        }
+/*
+    hier wird für das <summary> Element das before Pseudo-Element
+    und das after Pseudo-Element definiert.
+    background-image wird auf var(--image-plus) gesetzt.
+
+*/
+    .tree details[open] > summary::before {
+        background-image: var(--image-minus); /* Wechselt das Bild zum Minuszeichen */
+    }

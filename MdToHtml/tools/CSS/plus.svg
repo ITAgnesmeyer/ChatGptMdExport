@@ -1,0 +1,5 @@
+<?xml version="1.0" ?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+    <path d="M9 5h2v10h-2z" fill="#fff" /> <!-- Vertikale Linie -->
+    <path d="M5 9h10v2h-10z" fill="#fff" /> <!-- Horizontale Linie -->
+</svg>

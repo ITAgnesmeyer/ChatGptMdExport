@@ -1,7 +1,11 @@
 <?xml version="1.0"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="40" height="20">
-  <g fill="#fff">
-    <path d="m5 9h4v-4h2v4h4v2h-4v4h-2v-4h-4z"/>
-    <path d="m25 9h10v2h-10z"/>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+	<!-- Plus -->
+	<path d="M15 19h10v2h-10z" fill="#fff"/>
+	<!-- Horizontal line -->
+	<path d="M19 15h2v10h-2z" fill="#fff"/>
+	<!-- Vertical line -->
+	<!-- Minus -->
+	<path d="M15 35h10v2h-10z" fill="#fff"/>
+	<!-- Horizontal line only -->
 </svg>

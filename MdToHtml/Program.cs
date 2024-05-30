@@ -1,7 +1,5 @@
 ﻿using ChatGptMdExport;
 using Markdig;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 
 namespace MdToHtml
 {
@@ -17,15 +15,19 @@ namespace MdToHtml
     internal class Options : OpitonsBase
     {
 
+
+
+
+
         public Options(string[] args) : base(args)
         {
 
         }
 
         public bool SourceFolderExist => HasArg("/i");
-        public string? SourceFolder => this.SourceFolderExist? GetArg("/i"): string.Empty;
+        public string? SourceFolder => this.SourceFolderExist ? GetArg("/i") : string.Empty;
         public bool DestFolderExist => HasArg("/o");
-        public string? DestFolder => this.DestFolderExist? GetArg("/o"): string.Empty;
+        public string? DestFolder => this.DestFolderExist ? GetArg("/o") : string.Empty;
         public bool HasCreateDestiantion => HasArg("/c");
         public bool HasHelp => HasArg("/h");
 
@@ -45,6 +47,44 @@ namespace MdToHtml
 
     internal class Program
     {
+        private const string IndexContentConst = $@"<!DOCTYPE html>
+<html style=""height: 99%;width: 99%;"">
+  <head>
+    <title>Parcel Sandbox</title>
+    <meta charset=""UTF-8"" />
+    <link rel=""stylesheet"" href=""./css/FrameStyles.css""/>
+  </head>
+  <body style=""height: 99%;width: 100%;"">
+    <div class=""container"">
+      <div class=""left""><iframe name=""myFrame0"" title=""menu"" src=""./menu.html"" width=""100%"" height=""100%"" ></iframe></div>
+      <div class=""resizer"" id=""dragMe""></div>
+      <div class=""right""><iframe name=""myframe1"" title=""content"" src=""about:blank"" width=""100%"" height=""100%"" ></iframe></div>
+    </div>
+    <script src=""./css/FrameIndex.js""></script>
+  </body>
+</html>";
+
+        private const string MenuContentConst = @"<!DOCTYPE html>
+<html>
+<head>
+    <link rel=""stylesheet"" href=""./css/TreeStyles.css"">
+</head>
+<body>
+<ul class=""tree"">
+
+    <li>
+        <details open>
+            <summary>Pages</summary>
+            <ul>";
+        private const string MenuContentEndConst = @"
+            </ul>
+        </details>
+    </li>
+    
+</ul>
+</body>
+</html>";
+
         // erstelle eine funktion die alle ungültigen zeichen in dem Namen der HTML Datei ersetzt
         // die html datei soll in einem href aufrufbar sein
         // alle leerzeichen sollen durch einen unterticht ersetzt werden
@@ -52,7 +92,7 @@ namespace MdToHtml
         public static string ReplaceInvalidChars(string name)
         {
             string[] invalidChars = new string[] { " ", "ä", "ö", "ü", "ß", "Ä", "Ö", "Ü", "#" };
-            string[] replaceChars = new string[] { "_", "ae", "oe", "ue", "ss", "Ae", "Oe", "Ue","Sharp" };
+            string[] replaceChars = new string[] { "_", "ae", "oe", "ue", "ss", "Ae", "Oe", "Ue", "Sharp" };
             for (int i = 0; i < invalidChars.Length; i++)
             {
                 name = name.Replace(invalidChars[i], replaceChars[i]);
@@ -69,14 +109,14 @@ namespace MdToHtml
                 Options.PrintInfo();
                 return;
             }
-            if(!opt.SourceFolderExist)
+            if (!opt.SourceFolderExist)
             {
 
-               Console.WriteLine("Source folder is missing");
+                Console.WriteLine("Source folder is missing");
                 Options.PrintInfo();
                 return;
             }
-            if(!opt.DestFolderExist)
+            if (!opt.DestFolderExist)
             {
                 Console.WriteLine("Destination folder is missing");
                 Options.PrintInfo();
@@ -86,15 +126,15 @@ namespace MdToHtml
             bool createDest = opt.HasCreateDestiantion;
             string sourceFolder = opt.SourceFolder!;
             string destFolder = opt.DestFolder!;
-            if(!Directory.Exists(sourceFolder))
+            if (!Directory.Exists(sourceFolder))
             {
                 Console.WriteLine("Source folder does not exist");
                 return;
             }
 
-            if(!Directory.Exists(destFolder))
+            if (!Directory.Exists(destFolder))
             {
-                if(createDest)
+                if (createDest)
                 {
                     Directory.CreateDirectory(destFolder);
                 }
@@ -115,9 +155,9 @@ namespace MdToHtml
             // kopiere alle dateien die in dem Ordner tools\CSS liegen in das verzeichnis css im Zielverzeichnis
             // überpüfe ob der css ordner existiert            
             // kopiere die Dateien in das Zielverzeichnis wenn sie noch icht existiert
-         
+
             string cssFolder = Path.Combine(destFolder, "css");
-            if(!Directory.Exists(cssFolder))
+            if (!Directory.Exists(cssFolder))
             {
                 Directory.CreateDirectory(cssFolder);
             }
@@ -128,18 +168,17 @@ namespace MdToHtml
             {
                 string fileName = Path.GetFileName(file);
                 string destFile = Path.Combine(cssFolder, fileName);
-                if(!File.Exists(destFile))
-                {
-                    File.Copy(file, destFile);
-                    Console.WriteLine($"Copy=>{destFile}");
-                }
+                // die dateien sollen immer überschrieben werden
+
+                File.Copy(file, destFile,true);
+                Console.WriteLine($"Copy=>{destFile}");
             }
             List<LinkItem> links = new List<LinkItem>();
 
 
             // kopiere alle Dateien mit der Endung .md in das Zielverzeichnis
             // die Dateien sollen in das Zielverzeichnis kopiert werden und die Endung .md durch .html ersetzt werden
-                        
+
             string[] files = Directory.GetFiles(sourceFolder, "*.md");
             foreach (var file in files)
             {
@@ -148,7 +187,7 @@ namespace MdToHtml
 
                 string fileName = fi.Name;
 
-                
+
                 string destFileNameRaw = fileName.Replace(ext, "");
                 string linkName = ReplaceInvalidChars(destFileNameRaw) + ".html";
                 string destFile = Path.Combine(destFolder, linkName);
@@ -223,19 +262,19 @@ namespace MdToHtml
             {
                 // in item.Group wird das erste Wort von item.Name eingfügt
                 // wenn item.Name kein Leerzeichen enthält wird item.Group auf item.Name gesetzt
-                if(item.Name != null)
+                if (item.Name != null)
                 {
-                    if(item.Name.Contains(" "))
+                    if (item.Name.Contains(" "))
                     {
 
-                       item.Group = item.Name.Split(" ")[0];
+                        item.Group = item.Name.Split(" ")[0];
                     }
                     else
                     {
                         item.Group = item.Name;
                     }
                 }
-                
+
                 item.TagString = $"<li><a href=\"./{item.Link}\" target=\"myframe1\">{item.Name}</a></li>";
             }
 
@@ -248,7 +287,7 @@ namespace MdToHtml
                 // in dem summary element wird der Gruppenname eingefügt
                 // in dem details element wird ein ul element erstellt
                 // in dem ul element werden die Links der Gruppe eingefügt
-                
+
                 string groupContent = string.Empty;
                 foreach (var item in group)
                 {
@@ -262,55 +301,42 @@ namespace MdToHtml
         </details></li>";
 
 
-                
+
             }
 
-            string menuContent = $@"<!DOCTYPE html>
-<html>
-<head>
-    <link rel=""stylesheet"" href=""./css/TreeStyles.css"">
-</head>
-<body>
-<ul class=""tree"">
+            //            string menuContent = $@"<!DOCTYPE html>
+            //<html>
+            //<head>
+            //    <link rel=""stylesheet"" href=""./css/TreeStyles.css"">
+            //</head>
+            //<body>
+            //<ul class=""tree"">
 
-    <li>
-        <details open>
-            <summary>Pages</summary>
-            <ul>
-                {hRefs}
-            </ul>
-        </details>
-    </li>
-    
-</ul>
-</body>
-</html>";
+            //    <li>
+            //        <details open>
+            //            <summary>Pages</summary>
+            //            <ul>
+            //                {hRefs}
+            //            </ul>
+            //        </details>
+            //    </li>
 
-          string menuFile = Path.Combine(destFolder, "menu.html");
+            //</ul>
+            //</body>
+            //</html>";
+
+            string menuContent = MenuContentConst + hRefs + MenuContentEndConst;
+
+            string menuFile = Path.Combine(destFolder, "menu.html");
             File.WriteAllText(menuFile, menuContent);
             Console.WriteLine($"Write=>{menuFile}");
 
             string indexFile = Path.Combine(destFolder, "index.html");
-            string indexContent = $@"<!DOCTYPE html>
-<html style=""height: 100%;width: 100%;"">
-  <head>
-    <title>Parcel Sandbox</title>
-    <meta charset=""UTF-8"" />
-    <link rel=""stylesheet"" href=""./css/FrameStyles.css""/>
-  </head>
-  <body style=""height: 100%;width: 100%;"">
-    <div class=""container"">
-      <div class=""left""><iframe name=""myFrame0"" title=""menu"" src=""./menu.html"" width=""100%"" height=""100%"" ></iframe></div>
-      <div class=""resizer"" id=""dragMe""></div>
-      <div class=""right""><iframe name=""myframe1"" title=""content"" src=""about:blank"" width=""100%"" height=""100%"" ></iframe></div>
-    </div>
-    <script src=""./css/FrameIndex.js""></script>
-  </body>
-</html>";
-                        File.WriteAllText(indexFile, indexContent);
+
+            File.WriteAllText(indexFile, IndexContentConst);
             Console.WriteLine($"Write=>{indexFile}");
 
-            
+
         }
 
         static string GetTooPath()
@@ -324,5 +350,5 @@ namespace MdToHtml
         }
     }
 
-   
+
 }
