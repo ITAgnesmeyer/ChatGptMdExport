@@ -68,8 +68,13 @@ namespace MdToHtml
 <html>
 <head>
     <link rel=""stylesheet"" href=""./css/TreeStyles.css"">
+    <link rel=""stylesheet"" href=""./css/menu.css"">
 </head>
 <body>
+    <div class=""search-container"">
+        <input type=""text"" id=""searchBox"" placeholder=""Enter search text or Regex"">
+        <img src=""./css/search-icon.svg"" alt=""Search"" class=""search-icon"" onclick=""search()"">
+    </div>
 <ul class=""tree"">
 
     <li>
@@ -82,6 +87,7 @@ namespace MdToHtml
     </li>
     
 </ul>
+    <script src=""./css/Search.js""></script>
 </body>
 </html>";
 

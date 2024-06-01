@@ -1,0 +1,39 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+}
+
+.search-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 300px; /* Adjust width as needed */
+    margin: 20px auto; /* Center the search container */
+}
+
+#searchBox {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.search-icon {
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    /*
+    pointer-events: none;  Prevents the icon from blocking input clicks 
+    */
+}
+
+.tree li {
+    list-style-type: none;
+}
+
+.tree details {
+    margin-left: 20px;
+}
