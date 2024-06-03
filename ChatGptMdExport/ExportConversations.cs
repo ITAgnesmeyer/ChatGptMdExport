@@ -50,6 +50,7 @@ namespace ChatGptMdExport
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"# {conversation.Title}");
+          
             string lastRole = string.Empty;
             if (conversation.Mapping != null)
             {
@@ -57,6 +58,7 @@ namespace ChatGptMdExport
                 {
                     if (mapping?.Message != null)
                     {
+    
                         string currentRole = mapping.Message.Author?.Role!;
                         if (lastRole == "assistant" && currentRole == "assistant")
                         {
@@ -72,12 +74,12 @@ namespace ChatGptMdExport
                                 }
                             }
 
-                            sb.AppendLine(FormatMessageContent(mapping.Message.Content));
+                            sb.AppendLine(FormatMessageContent(mapping.Message.Content, mapping.Message.Metadata));
                         }
                         else 
                         {
                             sb.AppendLine($"## {mapping.Message.Author?.Role}");
-                            sb.AppendLine(FormatMessageContent(mapping.Message.Content));
+                            sb.AppendLine(FormatMessageContent(mapping.Message.Content, mapping.Message.Metadata));
                             
                         }
                         
@@ -88,11 +90,61 @@ namespace ChatGptMdExport
             return sb.ToString();
         }
 
-        private string FormatMessageContent(Content? content)
+        private string FormatMessageContent(Content? content, Metadata? metadata)
         {
             if (content?.Parts == null) return string.Empty;
+            if(metadata == null)
+            {
+                return string.Join(Environment.NewLine, content.Parts.Select(p => p)); 
+            }
 
-            return string.Join(Environment.NewLine, content.Parts.Select(p => p));
+            if(metadata.citations == null)
+            {
+                return string.Join(Environment.NewLine, content.Parts.Select(p => p));
+            }
+
+            if(metadata.citations.Count() == 0)
+            {
+                return string.Join(Environment.NewLine, content.Parts.Select(p => p));
+            }
+
+            string result = string.Join(Environment.NewLine, content.Parts.Select(p => p));
+          
+            string pattern = @"【(\d+)†source】";
+            Regex regex = new Regex(pattern);
+            
+
+            var regResult =  regex.Matches(result);
+            if(regResult.Count > 0)
+            {
+                foreach (Match item in regResult)
+                {
+                    foreach (Citation citation in metadata.citations)
+                    {
+                        if(citation.metadata != null)
+                        {
+                            if(citation.metadata.extra != null)
+                            {
+                                if(citation.metadata.extra.cited_message_idx != null)
+                                {
+                                    if (item.Groups[1].Value == citation.metadata.extra.cited_message_idx.ToString())
+                                    {
+                                        string link = $" ([{citation.metadata.title}]({citation.metadata.url})) ";
+                                        result = result.Replace(item.Value, link);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+
+
+           
+
+
+            return result;
         }
       
     }

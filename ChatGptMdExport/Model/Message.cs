@@ -2,6 +2,7 @@
 
 namespace ChatGptMdExport.Model
 {
+
     public class Message
     {
         [JsonPropertyName("id")]
@@ -21,7 +22,7 @@ namespace ChatGptMdExport.Model
         [JsonPropertyName("weight")]
         public double? Weight { get; set; }
         [JsonPropertyName("metadata")]
-        public Dictionary<string, object>? Metadata { get; set; }
+        public Metadata? Metadata { get; set; }
         [JsonPropertyName("recipient")]
         public string? Recipient { get; set; }
     }

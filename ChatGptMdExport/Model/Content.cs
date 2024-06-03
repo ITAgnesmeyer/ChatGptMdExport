@@ -7,6 +7,6 @@ namespace ChatGptMdExport.Model
         [JsonPropertyName("content_type")]
         public string? ContentType { get; set; }
         [JsonPropertyName("parts")]
-        public List<string>? Parts { get; set; }
+        public List<object>? Parts { get; set; }
     }
 }
